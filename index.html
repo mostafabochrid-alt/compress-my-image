@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Compress images online for free. Reduce JPG, PNG and WebP file sizes while keeping excellent quality.">
+<meta name="robots" content="index,follow">
+<title>Compress My Image — Free Image Compressor</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#07151b;color:#f5f7f8}
+header{padding:22px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #193039}
+.logo{font-size:23px;font-weight:800;color:#31d0c2}
+nav a{color:#b9c8cc;text-decoration:none;margin-left:20px;font-size:14px}
+.container{max-width:950px;margin:auto;padding:55px 20px}
+.hero{text-align:center}
+h1{font-size:45px;margin:0 0 15px}
+.hero p{color:#9fb0b5;font-size:18px;line-height:1.6}
+.box{margin:35px auto;padding:45px 25px;border:2px dashed #28434c;border-radius:25px;background:#0c2027;text-align:center;cursor:pointer}
+.box:hover{border-color:#31d0c2}
+.upload{display:inline-block;background:#31d0c2;color:#062027;padding:15px 28px;border-radius:12px;font-weight:bold}
+input{display:none}
+.settings{display:none;margin-top:25px;background:#0c2027;border-radius:20px;padding:25px}
+label{display:block;margin-bottom:10px;color:#b9c8cc}
+input[type=range]{display:block;width:100%;margin:15px 0}
+button{border:0;background:#31d0c2;color:#062027;padding:14px 24px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer}
+.results{display:none;margin-top:30px}
+.card{background:#0c2027;border:1px solid #193943;border-radius:18px;padding:20px;margin-bottom:20px}
+.preview{max-width:100%;max-height:350px;border-radius:12px;display:block;margin:auto}
+.stats{display:flex;justify-content:space-around;flex-wrap:wrap;gap:15px;margin:20px 0}
+.stat{padding:18px;min-width:150px;background:#091a20;border-radius:12px;text-align:center}
+.stat b{display:block;font-size:22px;color:#31d0c2;margin-top:7px}
+.info{margin-top:60px}
+.info h2{font-size:28px}
+.info p,.info li{color:#9fb0b5;line-height:1.7}
+footer{border-top:1px solid #193039;padding:30px 20px;text-align:center;color:#819399}
+footer a{color:#31d0c2;text-decoration:none;margin:0 8px}
+.error{color:#ff8f8f;margin-top:15px}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">Compress My Image</div>
+<nav>
+<a href="#compressor">Compressor</a>
+<a href="#about">About</a>
+<a href="#privacy">Privacy</a>
+</nav>
+</header>
+
+<main class="container">
+
+<section class="hero" id="compressor">
+<h1>Compress Images Online</h1>
+<p>Reduce image file size quickly and easily. Free, private and simple — no account required.</p>
+
+<div class="box" id="drop">
+<label for="file" class="upload">Choose Image</label>
+<input id="file" type="file" accept="image/jpeg,image/png,image/webp">
+<p>or drag & drop an image here</p>
+<div id="error" class="error"></div>
+</div>
+
+<div class="settings" id="settings">
+<label>Compression quality: <strong id="qualityText">75%</strong></label>
+<input id="quality" type="range" min="10" max="100" value="75">
+<button id="compress">Compress Image</button>
+</div>
+
+<div class="results" id="results">
+<div class="card">
+<h3>Original</h3>
+<img id="originalPreview" class="preview">
+<p id="originalSize"></p>
+</div>
+
+<div class="card">
+<h3>Compressed</h3>
+<img id="compressedPreview" class="preview">
+<div class="stats">
+<div class="stat">Compressed Size<b id="newSize">—</b></div>
+<div class="stat">Saved<b id="saved">—</b></div>
+<div class="stat">Dimensions<b id="dimensions">—</b></div>
+</div>
+<button id="download">Download Compressed Image</button>
+</div>
+</div>
+</section>
+
+<section class="info" id="about">
+<h2>Free Online Image Compressor</h2>
+<p>
+Compress My Image helps you reduce JPG, PNG and WebP file sizes directly in your browser.
+The tool is designed for websites, social media, email and everyday file sharing.
+</p>
+
+<h2>How it works</h2>
+<ol>
+<li>Choose an image from your device.</li>
+<li>Select the compression quality.</li>
+<li>Click Compress Image.</li>
+<li>Download your smaller image.</li>
+</ol>
+
+<h2 id="privacy">Privacy</h2>
+<p>
+Your images are processed locally in your browser. We do not require an account and
+the tool does not need to upload your images to our server for compression.
+</p>
+
+<h2>Supported Formats</h2>
+<p>JPG, JPEG, PNG and WebP images are supported.</p>
+</section>
+
+</main>
+
+<footer>
+<p>© 2026 Compress My Image. All rights reserved.</p>
+<a href="#about">About</a>
+<a href="#privacy">Privacy Policy</a>
+<a href="#compressor">Image Compressor</a>
+</footer>
+
+<script>
+const fileInput=document.getElementById("file");
+const drop=document.getElementById("drop");
+const settings=document.getElementById("settings");
+const results=document.getElementById("results");
+const quality=document.getElementById("quality");
+const qualityText=document.getElementById("qualityText");
+const compress=document.getElementById("compress");
+const error=document.getElementById("error");
+
+let selectedFile=null;
+let compressedBlob=null;
+
+quality.oninput=()=>{
+ qualityText.textContent=quality.value+"%";
+};
+
+fileInput.onchange=e=>{
+ if(e.target.files[0]) loadFile(e.target.files[0]);
+};
+
+drop.onclick=e=>{
+ if(e.target.tagName!=="LABEL") fileInput.click();
+};
+
+drop.ondragover=e=>{
+ e.preventDefault();
+ drop.style.borderColor="#31d0c2";
+};
+
+drop.ondragleave=()=>{
+ drop.style.borderColor="#28434c";
+};
+
+drop.ondrop=e=>{
+ e.preventDefault();
+ drop.style.borderColor="#28434c";
+ if(e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+};
+
+function loadFile(file){
+ if(!file.type.match(/^image\/(jpeg|png|webp)$/)){
+  error.textContent="Please choose a JPG, PNG or WebP image.";
+  return;
+ }
+
+ error.textContent="";
+ selectedFile=file;
+
+ const reader=new FileReader();
+
+ reader.onload=()=>{
+  document.getElementById("originalPreview").src=reader.result;
+  document.getElementById("originalSize").textContent=
+   "Original size: "+formatBytes(file.size);
+
+  settings.style.display="block";
+  results.style.display="block";
+ };
+
+ reader.readAsDataURL(file);
+}
+
+compress.onclick=()=>{
+ if(!selectedFile)return;
+
+ const img=new Image();
+
+ img.onload=()=>{
+  const canvas=document.createElement("canvas");
+  canvas.width=img.naturalWidth;
+  canvas.height=img.naturalHeight;
+
+  const ctx=canvas.getContext("2d");
+  ctx.drawImage(img,0,0);
+
+  canvas.toBlob(blob=>{
+   compressedBlob=blob;
+
+   document.getElementById("compressedPreview").src=
+    URL.createObjectURL(blob);
+
+   document.getElementById("newSize").textContent=
+    formatBytes(blob.size);
+
+   const saved=Math.max(0,(1-(blob.size/selectedFile.size))*100);
+
+   document.getElementById("saved").textContent=
+    saved.toFixed(1)+"%";
+
+   document.getElementById("dimensions").textContent=
+    img.naturalWidth+" × "+img.naturalHeight;
+  },"image/jpeg",Number(quality.value)/100);
+ };
+
+ img.src=URL.createObjectURL(selectedFile);
+};
+
+document.getElementById("download").onclick=()=>{
+ if(!compressedBlob)return;
+
+ const url=URL.createObjectURL(compressedBlob);
+ const a=document.createElement("a");
+
+ a.href=url;
+ a.download="compressed-image.jpg";
+ a.click();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+
+function formatBytes(bytes){
+ if(bytes===0)return "0 Bytes";
+ const k=1024;
+ const sizes=["Bytes","KB","MB","GB"];
+ const i=Math.floor(Math.log(bytes)/Math.log(k));
+ return parseFloat((bytes/Math.pow(k,i)).toFixed(2))+" "+sizes[i];
+}
+</script>
+
+</body>
+  </html>
