@@ -1,40 +1,81 @@
-head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Compress images online for free. Reduce JPG, PNG and WebP file sizes while keeping excellent quality.">
 <meta name="robots" content="index,follow">
-<title>Compress My Image — Free Image Compressor</title>
+<title>Compress My Image — Bulk Image Compressor</title>
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#07151b;color:#f5f7f8}
-header{padding:22px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #193039}
-.logo{font-size:23px;font-weight:800;color:#31d0c2}
-nav a{color:#b9c8cc;text-decoration:none;margin-left:20px;font-size:14px}
-.container{max-width:950px;margin:auto;padding:55px 20px}
+/* إعدادات عامة */
+*{box-sizing:border-box; transition: all 0.2s ease-in-out;}
+body{margin:0;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#07151b;color:#f5f7f8;line-height:1.6;}
+
+/* القائمة العلوية */
+header{padding:20px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #193039;background:#051014;position:sticky;top:0;z-index:100;}
+.logo{font-size:24px;font-weight:900;color:#31d0c2;letter-spacing:0.5px;}
+nav{display:flex;gap:25px;}
+nav a{color:#b9c8cc;text-decoration:none;font-size:15px;font-weight:500;}
+nav a:hover{color:#31d0c2;}
+
+/* الحاوية الرئيسية */
+.container{max-width:1000px;margin:auto;padding:50px 20px}
 .hero{text-align:center}
-h1{font-size:45px;margin:0 0 15px}
-.hero p{color:#9fb0b5;font-size:18px;line-height:1.6}
-.box{margin:35px auto;padding:45px 25px;border:2px dashed #28434c;border-radius:25px;background:#0c2027;text-align:center;cursor:pointer}
-.box:hover{border-color:#31d0c2}
-.upload{display:inline-block;background:#31d0c2;color:#062027;padding:15px 28px;border-radius:12px;font-weight:bold}
-input{display:none}
-.settings{display:none;margin-top:25px;background:#0c2027;border-radius:20px;padding:25px}
-label{display:block;margin-bottom:10px;color:#b9c8cc}
-input[type=range]{display:block;width:100%;margin:15px 0}
-button{border:0;background:#31d0c2;color:#062027;padding:14px 24px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer}
-.results{display:none;margin-top:30px}
-.card{background:#0c2027;border:1px solid #193943;border-radius:18px;padding:20px;margin-bottom:20px}
-.preview{max-width:100%;max-height:350px;border-radius:12px;display:block;margin:auto}
-.stats{display:flex;justify-content:space-around;flex-wrap:wrap;gap:15px;margin:20px 0}
-.stat{padding:18px;min-width:150px;background:#091a20;border-radius:12px;text-align:center}
-.stat b{display:block;font-size:22px;color:#31d0c2;margin-top:7px}
-.info{margin-top:60px}
-.info h2{font-size:28px}
-.info p,.info li{color:#9fb0b5;line-height:1.7}
-footer{border-top:1px solid #193039;padding:30px 20px;text-align:center;color:#819399}
-footer a{color:#31d0c2;text-decoration:none;margin:0 8px}
-.error{color:#ff8f8f;margin-top:15px}
+h1{font-size:42px;margin:0 0 15px;font-weight:800;color:#ffffff;}
+.hero p{color:#9fb0b5;font-size:18px;max-width:600px;margin:0 auto 30px;}
+
+/* منطقة رفع الصور */
+.box{margin:20px auto;padding:50px 20px;border:2px dashed #28434c;border-radius:20px;background:#0c2027;text-align:center;cursor:pointer;position:relative;}
+.box:hover{border-color:#31d0c2;background:#0e262e;}
+.upload{display:inline-block;background:#31d0c2;color:#062027;padding:14px 30px;border-radius:12px;font-weight:bold;font-size:16px;cursor:pointer;box-shadow:0 4px 15px rgba(49,208,194,0.2);}
+.upload:hover{background:#26a89d;transform:translateY(-2px);box-shadow:0 6px 20px rgba(49,208,194,0.3);}
+input[type="file"]{display:none}
+.box p{margin-top:15px;font-size:15px;color:#819399;}
+#fileCountBadge{display:inline-block; margin-top:10px; background:#091a20; padding:5px 15px; border-radius:20px; color:#31d0c2; font-weight:bold; display:none;}
+
+/* إعدادات الضغط */
+.settings{display:none;margin-top:30px;background:#0c2027;border:1px solid #193943;border-radius:18px;padding:30px;}
+label{display:flex;justify-content:space-between;margin-bottom:15px;color:#b9c8cc;font-size:16px;}
+#qualityText{color:#31d0c2;font-size:18px;}
+input[type=range]{display:block;width:100%;margin:20px 0;accent-color:#31d0c2;cursor:pointer;}
+button{border:0;background:#31d0c2;color:#062027;padding:16px 28px;border-radius:12px;font-weight:bold;font-size:16px;cursor:pointer;width:100%;box-shadow:0 4px 15px rgba(49,208,194,0.2);}
+button:hover{background:#26a89d;}
+button:disabled{background:#193039;color:#819399;cursor:not-allowed;box-shadow:none;}
+.download-all-btn{background:#e1e8ea; color:#051014; margin-top:25px;}
+.download-all-btn:hover{background:#ffffff;}
+
+/* النتائج والبطاقات */
+.results{display:none;margin-top:40px;}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:20px;}
+.card{background:#0c2027;border:1px solid #193943;border-radius:18px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,0.15); display:flex; flex-direction:column; justify-content:space-between;}
+.card-header{display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #193039; padding-bottom:15px; margin-bottom:15px;}
+.file-name{color:#e1e8ea; font-size:15px; font-weight:bold; word-break:break-all; max-width:70%;}
+.saved-badge{background:#113131; color:#31d0c2; padding:4px 10px; border-radius:10px; font-size:13px; font-weight:bold;}
+.card-preview{width:100%; height:140px; object-fit:contain; background:#051014; border-radius:10px; margin-bottom:15px;}
+
+/* إحصائيات الضغط المصغرة */
+.stats-mini{display:flex;justify-content:space-between;gap:10px;margin-bottom:15px;}
+.stat-mini{flex:1;background:#091a20;padding:10px;border-radius:10px;text-align:center;border:1px solid #193943;}
+.stat-mini span{display:block;font-size:11px;color:#819399;text-transform:uppercase;margin-bottom:4px;}
+.stat-mini b{font-size:14px;color:#f5f7f8;}
+.btn-small{padding:10px; font-size:14px; border-radius:8px;}
+
+/* نصوص المعلومات */
+.info{margin-top:70px;padding-top:40px;border-top:1px solid #193039;}
+.info h2{font-size:26px;color:#e1e8ea;}
+.info p,.info li{color:#9fb0b5;font-size:16px;}
+.error{color:#ff5e5e;margin-top:15px;font-weight:bold;}
+
+/* التذييل */
+footer{border-top:1px solid #193039;padding:30px 20px;text-align:center;color:#819399;background:#051014;}
+footer a{color:#31d0c2;text-decoration:none;margin:0 10px;font-size:14px;}
+
+@media (max-width:600px){
+ header{flex-direction:column;gap:15px;padding:20px;}
+ nav{width:100%;justify-content:center;flex-wrap:wrap;}
+ h1{font-size:32px;}
+}
 </style>
 </head>
 
@@ -52,156 +93,236 @@ footer a{color:#31d0c2;text-decoration:none;margin:0 8px}
 <main class="container">
 
 <section class="hero" id="compressor">
-<h1>Compress Images Online</h1>
-<p>Reduce image file size The tool is designed for websites, social media, email and everyday file sharing.
-</p>
+<h1>Bulk Image Compressor</h1>
+<p>Reduce multiple image file sizes quickly. Free, private and simple.</p>
 
+<div class="box" id="drop">
+<label for="file" class="upload">Choose Images</label>
+<!-- تم إضافة multiple للسماح برفع عدة صور -->
+<input id="file" type="file" multiple accept="image/jpeg,image/png,image/webp">
+<p id="dragText">or drag & drop images here</p>
+<div id="fileCountBadge"></div>
+<div id="error" class="error"></div>
+</div>
+
+<div class="settings" id="settings">
+<label><span>Compression quality</span> <strong id="qualityText">80%</strong></label>
+<input id="quality" type="range" min="10" max="100" value="80">
+<button id="compress">Compress Images</button>
+</div>
+
+<div class="results" id="results">
+<div class="result-grid" id="resultGrid">
+<!-- البطاقات غتزاد هنا ديناميكيا بـ JavaScript -->
+</div>
+<button id="downloadAll" class="download-all-btn" style="display:none;">Download All Compressed Images</button>
+</div>
+</section>
+
+<section class="info" id="about">
+<h2>Free Online Bulk Image Compressor</h2>
+<p>Compress My Image helps you reduce JPG, PNG and WebP file sizes in bulk directly in your browser.</p>
 <h2>How it works</h2>
 <ol>
-<li>Choose an image from your device.</li>
-<li>Select the compression quality.</li>
-<li>Click Compress Image.</li>
-<li>Download your smaller image.</li>
+<li>Select multiple images from your device.</li>
+<li>Adjust the compression quality slider.</li>
+<li>Click "Compress Images" to process them all at once.</li>
+<li>Download them individually or all together.</li>
 </ol>
-
 <h2 id="privacy">Privacy</h2>
-<p>
-Your images are processed locally in your browser. We do not require an account and
-the tool does not need to upload your images to our server for compression.
-</p>
-
-<h2>Supported Formats</h2>
-<p>JPG, JPEG, PNG and WebP images are supported.</p>
+<p>Your images are processed locally in your browser. No files are uploaded to any server.</p>
 </section>
 
 </main>
 
 <footer>
 <p>© 2026 Compress My Image. All rights reserved.</p>
+<div style="margin-top:10px;">
 <a href="#about">About</a>
 <a href="#privacy">Privacy Policy</a>
-<a href="#compressor">Image Compressor</a>
+</div>
 </footer>
 
 <script>
-const fileInput=document.getElementById("file");
-const drop=document.getElementById("drop");
-const settings=document.getElementById("settings");
-const results=document.getElementById("results");
-const quality=document.getElementById("quality");
-const qualityText=document.getElementById("qualityText");
-const compress=document.getElementById("compress");
-const error=document.getElementById("error");
+const fileInput = document.getElementById("file");
+const drop = document.getElementById("drop");
+const settings = document.getElementById("settings");
+const results = document.getElementById("results");
+const resultGrid = document.getElementById("resultGrid");
+const downloadAllBtn = document.getElementById("downloadAll");
+const quality = document.getElementById("quality");
+const qualityText = document.getElementById("qualityText");
+const compress = document.getElementById("compress");
+const error = document.getElementById("error");
+const fileCountBadge = document.getElementById("fileCountBadge");
 
-let selectedFile=null;
-let compressedBlob=null;
+let selectedFiles = [];
+let compressedData = []; // لتخزين الصور المضغوطة
 
-quality.oninput=()=>{
- qualityText.textContent=quality.value+"%";
+quality.oninput = () => {
+ qualityText.textContent = quality.value + "%";
 };
 
-fileInput.onchange=e=>{
- if(e.target.files[0]) loadFile(e.target.files[0]);
+fileInput.onchange = e => {
+ if(e.target.files.length > 0) loadFiles(e.target.files);
 };
 
-drop.onclick=e=>{
- if(e.target.tagName!=="LABEL") fileInput.click();
+drop.onclick = e => {
+ if(e.target.tagName !== "LABEL") fileInput.click();
 };
 
-drop.ondragover=e=>{
+drop.ondragover = e => {
  e.preventDefault();
- drop.style.borderColor="#31d0c2";
+ drop.style.borderColor = "#31d0c2";
+ drop.style.background = "#0e262e";
 };
 
-drop.ondragleave=()=>{
- drop.style.borderColor="#28434c";
+drop.ondragleave = () => {
+ drop.style.borderColor = "#28434c";
+ drop.style.background = "#0c2027";
 };
 
-drop.ondrop=e=>{
+drop.ondrop = e => {
  e.preventDefault();
- drop.style.borderColor="#28434c";
- if(e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+ drop.style.borderColor = "#28434c";
+ drop.style.background = "#0c2027";
+ if(e.dataTransfer.files.length > 0) loadFiles(e.dataTransfer.files);
 };
 
-function loadFile(file){
- if(!file.type.match(/^image\/(jpeg|png|webp)$/)){
-  error.textContent="Please choose a JPG, PNG or WebP image.";
+function loadFiles(files) {
+ // تصفية الصور فقط
+ selectedFiles = Array.from(files).filter(file => file.type.match(/^image\/(jpeg|png|webp)$/));
+ 
+ if(selectedFiles.length === 0){
+  error.textContent = "Please choose valid JPG, PNG or WebP images.";
   return;
  }
-
- error.textContent="";
- selectedFile=file;
-
- const reader=new FileReader();
-
- reader.onload=()=>{
-  document.getElementById("originalPreview").src=reader.result;
-  document.getElementById("originalSize").textContent=
-   "Original size: "+formatBytes(file.size);
-
-  settings.style.display="block";
-  results.style.display="block";
- };
-
- reader.readAsDataURL(file);
+ 
+ error.textContent = "";
+ 
+ // تحديث واجهة الرفع
+ fileCountBadge.style.display = "inline-block";
+ fileCountBadge.textContent = selectedFiles.length + " image(s) selected ready to compress";
+ 
+ settings.style.display = "block";
+ results.style.display = "none";
+ resultGrid.innerHTML = "";
+ downloadAllBtn.style.display = "none";
+ 
+ compress.disabled = false;
+ compress.textContent = `Compress ${selectedFiles.length} Image(s)`;
 }
 
-compress.onclick=()=>{
- if(!selectedFile)return;
+compress.onclick = async () => {
+ if (selectedFiles.length === 0) return;
+ 
+ compress.textContent = "Compressing... ⏳";
+ compress.disabled = true;
+ results.style.display = "block";
+ resultGrid.innerHTML = "";
+ compressedData = [];
 
- const img=new Image();
+ // معالجة الصور بالتتابع (Async)
+ for (let i = 0; i < selectedFiles.length; i++) {
+    let file = selectedFiles[i];
+    
+    await new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
 
- img.onload=()=>{
-  const canvas=document.createElement("canvas");
-  canvas.width=img.naturalWidth;
-  canvas.height=img.naturalHeight;
+            canvas.toBlob(blob => {
+                const objectUrl = URL.createObjectURL(blob);
+                const originalPreviewUrl = URL.createObjectURL(file);
+                
+                compressedData.push({
+                    originalName: file.name,
+                    blob: blob,
+                    url: objectUrl,
+                    previewUrl: originalPreviewUrl,
+                    originalSize: file.size,
+                    newSize: blob.size
+                });
+                resolve();
+            }, "image/jpeg", Number(quality.value) / 100);
+        };
+        img.src = URL.createObjectURL(file);
+    });
+ }
 
-  const ctx=canvas.getContext("2d");
-  ctx.drawImage(img,0,0);
-
-  canvas.toBlob(blob=>{
-   compressedBlob=blob;
-
-   document.getElementById("compressedPreview").src=
-    URL.createObjectURL(blob);
-
-   document.getElementById("newSize").textContent=
-    formatBytes(blob.size);
-
-   const saved=Math.max(0,(1-(blob.size/selectedFile.size))*100);
-
-   document.getElementById("saved").textContent=
-    saved.toFixed(1)+"%";
-
-   document.getElementById("dimensions").textContent=
-    img.naturalWidth+" × "+img.naturalHeight;
-  },"image/jpeg",Number(quality.value)/100);
- };
-
- img.src=URL.createObjectURL(selectedFile);
+ // عرض النتائج بعد الانتهاء
+ renderResults();
+ 
+ compress.textContent = `Compress ${selectedFiles.length} Image(s)`;
+ compress.disabled = false;
+ if(compressedData.length > 1) {
+    downloadAllBtn.style.display = "block";
+ }
+ 
+ results.scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
 
-document.getElementById("download").onclick=()=>{
- if(!compressedBlob)return;
+function renderResults() {
+ compressedData.forEach((data, index) => {
+    const savedPercent = Math.max(0, (1 - (data.newSize / data.originalSize)) * 100).toFixed(1);
+    const card = document.createElement("div");
+    card.className = "card";
+    
+    card.innerHTML = `
+        <div>
+            <div class="card-header">
+                <span class="file-name">${data.originalName}</span>
+                <span class="saved-badge">-${savedPercent}%</span>
+            </div>
+            <img src="${data.previewUrl}" class="card-preview">
+            <div class="stats-mini">
+                <div class="stat-mini">
+                    <span>Original</span>
+                    <b>${formatBytes(data.originalSize)}</b>
+                </div>
+                <div class="stat-mini">
+                    <span>Compressed</span>
+                    <b style="color:#31d0c2;">${formatBytes(data.newSize)}</b>
+                </div>
+            </div>
+        </div>
+        <button class="btn-small" onclick="downloadSingle(${index})">Download</button>
+    `;
+    resultGrid.appendChild(card);
+ });
+}
 
- const url=URL.createObjectURL(compressedBlob);
- const a=document.createElement("a");
-
- a.href=url;
- a.download="compressed-image.jpg";
+// دالة تحميل صورة واحدة
+window.downloadSingle = (index) => {
+ const data = compressedData[index];
+ const a = document.createElement("a");
+ a.href = data.url;
+ const nameWithoutExt = data.originalName.split('.').slice(0, -1).join('.');
+ a.download = `${nameWithoutExt}_min.jpg`;
  a.click();
+};
 
- setTimeout(()=>URL.revokeObjectURL(url),1000);
+// دالة تحميل الكل بتأخير زمني لتفادي حظر المتصفح
+downloadAllBtn.onclick = () => {
+ compressedData.forEach((data, index) => {
+    setTimeout(() => {
+        downloadSingle(index);
+    }, index * 500); // نصف ثانية بين كل تحميل
+ });
 };
 
 function formatBytes(bytes){
- if(bytes===0)return "0 Bytes";
- const k=1024;
- const sizes=["Bytes","KB","MB","GB"];
- const i=Math.floor(Math.log(bytes)/Math.log(k));
- return parseFloat((bytes/Math.pow(k,i)).toFixed(2))+" "+sizes[i];
+ if(bytes === 0) return "0 B";
+ const k = 1024;
+ const sizes = ["B","KB","MB","GB"];
+ const i = Math.floor(Math.log(bytes) / Math.log(k));
+ return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 }
 </script>
 
 </body>
-  </html>
+</html>
